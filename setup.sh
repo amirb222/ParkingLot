@@ -1,3 +1,6 @@
+# debug
+# set -o xtrace
+
 KEY_NAME="cloud-course-`date +'%N'`"
 KEY_PEM="$KEY_NAME.pem"
 
