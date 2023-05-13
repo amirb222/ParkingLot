@@ -28,9 +28,9 @@ aws ec2 authorize-security-group-ingress        \
     --group-name $SEC_GRP --port 22 --protocol tcp \
     --cidr $MY_IP/32
 
-echo "setup rule allowing HTTP (port 5000) access to $MY_IP only"
+echo "setup rule allowing HTTP (port 8000) access to all IP"
 aws ec2 authorize-security-group-ingress        \
-    --group-name $SEC_GRP --port 5000 --protocol tcp \
+    --group-name $SEC_GRP --port 8000 --protocol tcp \
     --cidr 0.0.0.0/0
 
 UBUNTU_20_04_AMI="ami-00aa9d3df94c6c354"
@@ -54,7 +54,7 @@ PUBLIC_IP=$(aws ec2 describe-instances  --instance-ids $INSTANCE_ID |
 echo "New instance $INSTANCE_ID @ $PUBLIC_IP"
 
 echo "deploying code to production"
-scp -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=60" app.py ubuntu@$PUBLIC_IP:/home/ubuntu/
+scp -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=60" main.py ubuntu@$PUBLIC_IP:/home/ubuntu/
 
 echo "setup production environment"
 ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@$PUBLIC_IP <<EOF
@@ -70,10 +70,10 @@ echo "test that it all worked"
 echo
 echo "This is the IP of the Current instance: $PUBLIC_IP"
 echo
-echo "Example for insert a car: curl -X POST http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+echo "Example for insert a car: curl -X POST http://$PUBLIC_IP:8000/entry?plate=123-123-123&parkingLot=382"
 echo
-curl -X POST "http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+curl -X POST "http://$PUBLIC_IP:8000/entry?plate=123-123-123&parkingLot=382"
 echo
-echo "Example for exit that car curl -X POST http://$PUBLIC_IP:5000/exit?ticketId=0"
+echo "Example for exit that car curl -X POST http://$PUBLIC_IP:8000/exit?ticketId=0"
 echo
-curl -X POST "http://$PUBLIC_IP:5000/exit?ticketId=0"
+curl -X POST "http://$PUBLIC_IP:8000/exit?ticketId=0"
