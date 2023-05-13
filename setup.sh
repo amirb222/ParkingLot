@@ -1,6 +1,3 @@
-# debug
-# set -o xtrace
-
 KEY_NAME="cloud-course-`date +'%N'`"
 KEY_PEM="$KEY_NAME.pem"
 
@@ -65,4 +62,15 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=10" ubuntu@
     exit
 EOF
 
+echo
 echo "test that it all worked"
+echo
+echo "This is the IP of the Current instance: $PUBLIC_IP"
+echo
+echo "Example for insert a car: curl -X POST http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+echo
+curl -X POST "http://$PUBLIC_IP:5000/entry?plate=123-123-123&parkingLot=382"
+echo
+echo "Example for exit that car curl -X POST http://$PUBLIC_IP:5000/exit?ticketId=0"
+echo
+curl -X POST "http://$PUBLIC_IP:5000/exit?ticketId=0"
