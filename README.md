@@ -1,3 +1,5 @@
 EX1- Cloud Computing
+
 submitted by:
+
 Shani Yakir - 208930503 , Amir Beirav - 
